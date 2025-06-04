@@ -1,0 +1,2 @@
+# Ignore python notebooks in language detection
+*.ipynb  linguist-language=text
