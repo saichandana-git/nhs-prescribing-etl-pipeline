@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  nginx:
+    container_name: nginx
+    restart: unless-stopped
+    build: ./nginx_init_ssl
+    volumes:
+      - ./ssl/certbot/conf:/etc/letsencrypt
+      - ./ssl/certbot/www:/var/www/certbot
+    ports:
+      - "80:80"
+  
+  certbot:
+    image: certbot/certbot:latest
+    depends_on: 
+      - nginx
+    volumes:
+      - ./ssl/certbot/conf:/etc/letsencrypt
+      - ./ssl/certbot/www:/var/www/certbot
+    command: certonly --webroot --webroot-path=/var/www/certbot --email example@email.com --agree-tos --no-eff-email --force-renewal -d ofbennett.com  -d www.ofbennett.com 
